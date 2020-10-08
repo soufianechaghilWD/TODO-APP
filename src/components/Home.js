@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { FormControl, Button, Input } from "@material-ui/core";
 
 function Home(props) {
   const [username, setUsername] = useState("");
@@ -39,20 +40,20 @@ function Home(props) {
   };
 
   return (
-    <div>
-      <h1>This is the index Page of my web site</h1>
-      <h2>Sign up</h2>
-      <form>
-        <input
-          id="username"
+    <div className="home">
+      <h2 className="home__title">Sign up</h2>
+      <br />
+      <FormControl>
+        <Input
+          id="name"
           type="text"
           name="username"
-          placeholder="Type Your Username"
+          placeholder="Type Your complete name"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <br />
-        <input
+        <Input
           id="email"
           type="text"
           name="email"
@@ -61,7 +62,7 @@ function Home(props) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <br />
-        <input
+        <Input
           id="password"
           type="password"
           name="pass"
@@ -70,16 +71,30 @@ function Home(props) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />
-        <button type="submit" onClick={handleSubmit}>
+        <Button
+          disabled={!username || !email || !password}
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={handleSubmit}
+        >
           submit
-        </button>
-      </form>
-      <hr />
-      <hr />
-      <hr />
-      <hr />
-      <hr />
-      <button onClick={() => props.history.push("/signin")}>Sign In</button>
+        </Button>
+      </FormControl>
+
+      <br />
+      <br />
+      <br />
+
+      <p>
+        If You already have an account
+        <span>
+          <a href="/signin" className="home__signin">
+            {" "}
+            Sign In
+          </a>
+        </span>
+      </p>
     </div>
   );
 }
