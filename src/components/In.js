@@ -28,7 +28,7 @@ function In(props) {
 
   return user !== null ? (
     <div>
-      <h3>You are In</h3>
+      <h3>You are In {user.displayName}</h3>
       <button onClick={logout}>Log out</button>
     </div>
   ) : (

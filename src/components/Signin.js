@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { auth } from "../firebase";
+import { Button, FormControl, Input } from "@material-ui/core";
 
 function Signin(props) {
   const [email, setEmail] = useState("");
@@ -15,9 +16,11 @@ function Signin(props) {
       .catch((error) => alert(error.message));
   };
   return (
-    <div>
-      <form>
-        <input
+    <div className="home">
+      <h2 className="home__title">Sign In</h2>
+      <br />
+      <FormControl>
+        <Input
           id="email"
           type="text"
           name="email"
@@ -26,7 +29,7 @@ function Signin(props) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <br />
-        <input
+        <Input
           id="password"
           type="password"
           name="pass"
@@ -35,10 +38,28 @@ function Signin(props) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />
-        <button type="submit" onClick={handleSubmit}>
+        <Button
+          disabled={!email || !password}
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={handleSubmit}
+        >
           submit
-        </button>
-      </form>
+        </Button>
+      </FormControl>
+      <br />
+      <br />
+      <br />
+      <p>
+        If You don't have an account
+        <span>
+          <a href="/" className="home__signin">
+            {" "}
+            Sign Up
+          </a>
+        </span>
+      </p>
     </div>
   );
 }

@@ -41,7 +41,7 @@ function Home(props) {
 
   return (
     <div className="home">
-      <h2 className="home__title">Sign up</h2>
+      <h2 className="home__title">Sign Up</h2>
       <br />
       <FormControl>
         <Input
