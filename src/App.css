@@ -1,22 +1,23 @@
 * {
   margin: 0;
-  text-align: center;
 }
 
 .header {
+  text-align: center;
   color: rgb(240, 228, 228);
-  background-color: rgb(21, 20, 20);
+  background-color: rgb(79, 76, 76);
   padding: 10px 0;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 .home {
+  text-align: center;
   border: 1px solid rgb(230, 222, 222);
   border-radius: 2%;
   padding: 20px 10px;
   width: 300px;
   display: block;
-  margin: auto;
+  margin: 100px auto;
   background-color: rgb(240, 231, 231);
 }
 .home__title {
@@ -25,4 +26,21 @@
 }
 .home__signin {
   font-family: cursive;
+}
+input {
+  text-align: left;
+}
+.In__name {
+  font-weight: 900;
+}
+.In__2row {
+  margin-top: 30px;
+}
+.In__label {
+  font-weight: 600;
+}
+.In__show {
+  padding-top: 20px;
+  background-color: rgb(240, 231, 231);
+  padding-bottom: 20px;
 }

@@ -45,7 +45,7 @@ function Signin(props) {
           type="submit"
           onClick={handleSubmit}
         >
-          submit
+          Connect
         </Button>
       </FormControl>
       <br />
