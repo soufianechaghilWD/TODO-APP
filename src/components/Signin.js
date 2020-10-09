@@ -54,7 +54,7 @@ function Signin(props) {
       <p>
         If You don't have an account
         <span>
-          <a href="/" className="home__signin">
+          <a onClick={() => props.history.push('/')} type="button" className="home__signin">
             {" "}
             Sign Up
           </a>

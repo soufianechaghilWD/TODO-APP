@@ -89,7 +89,7 @@ function Home(props) {
       <p>
         If You already have an account
         <span>
-          <a href="/signin" className="home__signin">
+          <a type="button" onClick={() => props.history.push('/signin')} className="home__signin">
             {" "}
             Sign In
           </a>

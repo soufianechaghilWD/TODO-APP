@@ -41,6 +41,21 @@ input {
 }
 .In__show {
   padding-top: 20px;
-  background-color: rgb(240, 231, 231);
+  background-color: rgb(253, 251, 251);
   padding-bottom: 20px;
+}
+.Todo__default {
+  padding-top: 30px;
+  height: 130px;
+}
+.In__todo {
+  background-color: #dbeedf;
+  margin-bottom: 20px;
+}
+.todo__modal {
+  display: block;
+  margin: auto;
+}
+.todo__done {
+  background-color: rgb(131, 247, 15) !important;
 }

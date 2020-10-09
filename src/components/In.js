@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { auth } from "../firebase";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { auth, db } from "../firebase";
+import {  Container, Row, Col, Form } from "react-bootstrap";
+import { Button } from '@material-ui/core'
 import "bootstrap/dist/css/bootstrap.min.css";
 import Todo from "./Todo";
+import firebase from 'firebase'
 
 function In(props) {
   const [user, setUser] = useState(null);
   const [input, setInput] = useState("");
-  const [todos, setTodos] = useState([null, null, null, null, null]);
+  const [todos, setTodos] = useState([]);
+  const [history, setHistory] = useState([]) 
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -24,61 +28,107 @@ function In(props) {
     };
   }, [user]);
 
+  useEffect(() => {
+    if(user){
+       db.collection(user.uid).orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        setTodos(snapshot.docs.map(doc => ({id: doc.id , todo: doc.data().todo, done: doc.data().done}))) 
+      })
+    }
+  }, [user])
+
+
+
   const logout = (e) => {
     e.preventDefault();
 
     auth.signOut();
     props.history.push("/");
   };
-  const deleteOneIfExist = (tab, inp) => {
-    let res = [inp, ...tab];
-    if (res[res.length - 1] === null) {
-      res.splice(res.length - 1, 1);
-    }
-    return res;
-  };
+  
   const addOne = (e) => {
     e.preventDefault();
-    setTodos(deleteOneIfExist(todos, input));
+    db.collection(user.uid).add({
+      todo: input,
+      timestamp : firebase.firestore.FieldValue.serverTimestamp(),
+      done: false
+    })
     setInput("");
   };
 
+  useEffect(() => {
+    if(user){
+    db.collection("history").doc(user.uid)
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        setHistory(doc.data().list);
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        db.collection("history").doc(user.uid).set({
+          list:  {TODOS: todos},
+          who: user.displayName
+        })
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    })}
+  }, [user])
+
+  function clearCollection(path) {
+    const ref = db.collection(path)
+    ref.onSnapshot((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        ref.doc(doc.id).delete()
+      })
+    })
+  }
   const addTodoList = (e) => {
     e.preventDefault();
+    db.collection("history").doc(user.uid).set({
+      list:  [...history, {TODOS: todos}],
+      who: user.displayName
+    })
+    setHistory([])
+    setTodos([])
+    clearCollection(user.uid);
   };
   return user !== null ? (
-    <Container className="In">
+    <Container fluid className="In">
       <Row>
         <Col sm={6}>
           <h3 className="In__name">{user.displayName}</h3>
         </Col>
         <Col sm={{ offset: 4 }}>
-          <Button onClick={logout} variant="secondary">
+          <Button onClick={logout} variant="contained">
             Logout
           </Button>
         </Col>
       </Row>
-      <Row className="In__2row">
+      <Row className="In__2row justify-content-between">
         <Col
           xs={{ span: 12, order: 2 }}
           md={{ span: 7, order: 1 }}
           className="In__show"
         >
-          {todos.map((todo) => (
-            <Todo todo={todo} />
+          { 
+          todos.map((todo) => (
+            <Todo todo={todo} key={todo.id}/>
           ))}
-
+  <center>
           <Button
+          variant="contained" color="primary"
             onClick={addTodoList}
             disabled={todos.length === 0}
             className="In__setButton"
           >
-            Set up as today's todo list
+            Clear up the To do list
           </Button>
+          </center>
         </Col>
         <Col
           xs={{ span: 12, order: 1 }}
-          md={{ span: 5, order: 2 }}
+          md={{ span: 3, order: 2 }}
           className="In__add"
         >
           <Form>
@@ -93,7 +143,8 @@ function In(props) {
             <Button
               type="submit"
               onClick={addOne}
-              variant="success"
+              variant="outlined" color="primary"
+              size="large"
               disabled={!input}
             >
               Add
