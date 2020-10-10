@@ -77,10 +77,7 @@ function In(props) {
     e.preventDefault();
     if(history.length === 0){
       db.collection("history").doc(user.uid).set({
-        list:  [{TODOS: todos}],
-        who: user.displayName
-      }).then(() => {
-        console.log(history)
+        list:  [{TODOS: todos, timestamp: new Date()}]      }).then(() => {
         setHistory([]);
         todos.forEach(todo => {
           db.collection(user.uid).doc(todo.id).delete()
@@ -88,10 +85,8 @@ function In(props) {
       })
     }else{
     db.collection("history").doc(user.uid).set({
-      list:  [...history, {TODOS: todos}],
-      who: user.displayName
-    }).then(() => {
-      console.log(history)
+      list:  [...history, {TODOS: todos, timestamp: new Date()}]
+        }).then(() => {
       setHistory([]);
       todos.forEach(todo => {
         db.collection(user.uid).doc(todo.id).delete()
@@ -99,13 +94,22 @@ function In(props) {
     })
   }
   };
+  const toHistory = (e) => {
+    e.preventDefault()
+    props.history.push('/history')
+  }
   return user !== null ? (
     <Container fluid className="In">
       <Row>
-        <Col sm={6}>
+        <Col sm={4}>
           <h3 className="In__name">{user.displayName}</h3>
         </Col>
-        <Col sm={{ offset: 4 }}>
+        <Col sm={4}>
+        <Button onClick={toHistory} variant="contained">
+            History
+          </Button>
+        </Col>
+        <Col sm={{ offset: 2 }}>
           <Button onClick={logout} variant="contained">
             Logout
           </Button>

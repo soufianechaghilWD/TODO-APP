@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import In from "./components/In";
 import Signin from "./components/Signin";
 import Header from "./components/Header";
-
+import History from './components/History';
 function App() {
   return (
     <Router>
@@ -13,6 +13,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/in" component={In} />
+        <Route path="/history" component={History} />
         <Route path="/signin" component={Signin} />
       </Switch>
     </Router>

@@ -59,3 +59,22 @@ input {
 .todo__done {
   background-color: rgb(131, 247, 15) !important;
 }
+.history__header {
+  margin-bottom: 50px;
+}
+.history__each {
+  padding: 15px 40px;
+  text-decoration: underline;
+  color: blue;
+}
+.history__done {
+  color: rgb(43, 141, 64);
+  padding: 10px;
+}
+.history__ndone {
+  padding: 10px;
+}
+.history__show {
+  padding: 30px 0;
+  background-color: rgb(225, 237, 186);
+}
