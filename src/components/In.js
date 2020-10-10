@@ -65,33 +65,39 @@ function In(props) {
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
-        db.collection("history").doc(user.uid).set({
-          list:  {TODOS: todos},
-          who: user.displayName
-        })
-      }
+        }
     }).catch(function(error) {
       console.log("Error getting document:", error);
     })}
-  }, [user])
+  }, [user, todos])
 
-  function clearCollection(path) {
-    const ref = db.collection(path)
-    ref.onSnapshot((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        ref.doc(doc.id).delete()
-      })
-    })
-  }
+
+  
   const addTodoList = (e) => {
     e.preventDefault();
+    if(history.length === 0){
+      db.collection("history").doc(user.uid).set({
+        list:  [{TODOS: todos}],
+        who: user.displayName
+      }).then(() => {
+        console.log(history)
+        setHistory([]);
+        todos.forEach(todo => {
+          db.collection(user.uid).doc(todo.id).delete()
+        })
+      })
+    }else{
     db.collection("history").doc(user.uid).set({
       list:  [...history, {TODOS: todos}],
       who: user.displayName
+    }).then(() => {
+      console.log(history)
+      setHistory([]);
+      todos.forEach(todo => {
+        db.collection(user.uid).doc(todo.id).delete()
+      })
     })
-    setHistory([])
-    setTodos([])
-    clearCollection(user.uid);
+  }
   };
   return user !== null ? (
     <Container fluid className="In">
